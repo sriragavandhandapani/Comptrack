@@ -1,0 +1,58 @@
+version: '3.9'
+
+# Define standard named volumes for persistent data storage
+volumes:
+  mongodata:
+    driver: local
+
+services:
+  # MongoDB Service (Database)
+  mongo:
+    image: mongo:7-jammy
+    container_name: comptrack-db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - comptrack-network
+
+  # Node.js Backend Service
+  backend:
+    build:
+      context: ./comptrack-backend
+      dockerfile: Dockerfile
+    container_name: comptrack-backend
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongo:27017/comptrack
+      - JWT_SECRET=prod_ready_comp_track_secret_token_key_98765
+      - NODE_ENV=production
+    networks:
+      - comptrack-network
+
+  # React Nginx Frontend Service
+
+  frontend:
+    build:
+      context: ./comptrack-frontend
+      dockerfile: Dockerfile
+    container_name: comptrack-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - comptrack-network
+
+# Networks definition to isolate container communications
+networks:
+  comptrack-network:
+    driver: bridge
