@@ -37,7 +37,7 @@ jobs:
       # 4. Clean Install Backend Dependencies
       - name: Install Backend Dependencies
         working-directory: ./comptrack-backend
-        run: npm ci
+        run: npm install
 
       # 5. Run Jest Unit Tests with Coverage (fails if coverage is < 80% as configured in package.json)
       - name: Run Jest with coverage
@@ -59,7 +59,7 @@ jobs:
       # 7. Clean Install Frontend Dependencies
       - name: Install Frontend Dependencies
         working-directory: ./comptrack-frontend
-        run: npm ci
+        run: npm install
 
       # 8. Compile Frontend Code (creates standard build folder)
       - name: Build Frontend Application
