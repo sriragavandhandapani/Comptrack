@@ -47,7 +47,7 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
-      # 6. Cache Node.js modules for frontend to speed up builds
+      # 6. Cache Node.js modules for frontend to speed up build
       - name: Cache Frontend Node Modules
         uses: actions/cache@v4
         with:
